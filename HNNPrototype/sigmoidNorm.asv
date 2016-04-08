@@ -17,9 +17,12 @@ function [normStimVec] = sigmoidNorm(stimulus)
     end
     
     %Normalize the nValues so that they fall within the unit circle
-    tempSum = sum(nValues)
-        
+    tempSum = sum(stimulus)
+    %stimNorm = stimulus / tempSum
+    stimNorm = 1 / tempSum
+    
     %Use Euler's formula to convert the angles into complex form
     for n = 1:stimVecSize
-        normStimVec(n) = stimulus(n) * ( cos(nValues(n)) + i * sin(nValues(n)) );
+        normStimVec(n) = stimNorm( * ( cos(nValues(n)) + i * sin(nValues(n)) );
+        %normStimVec(n) = ( cos(nValues(n)) + i * sin(nValues(n)) );
     end
