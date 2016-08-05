@@ -1,8 +1,9 @@
-function trainedNetwork = HNNproto(stimVec, respVec)
-%This function does something
+function trainedNetwork = HNNproto(stimVec, respVec, learningMode)
+%learningMode 1: Original
+%learningMode 2 : Improved
 
-stimVecSize = size(stimVec);
-respVecSize = size(respVec);
+stimVecSize = size(stimVec)
+respVecSize = size(respVec)
 
 %%Preallocate the matrix array
 stimMatrixNormal = zeros(stimVecSize(1), stimVecSize(2));
@@ -18,12 +19,35 @@ end
 for n=1:respVecSize(1)
     respMatrixNormal(n,:) =  sigmoidNorm(respVec(n,:));
 end
-
+    
 trainedNetwork = zeros(stimVecSize(2), respVecSize(2));
 
-%Train the network
-for n=1:stimVecSize
-    stimMatrixNormal(n,:)
-    respMatrixNormal(n,:)
-    trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
+if learningMode == 1
+    %Train the network
+    for n=1:stimVecSize
+        stimMatrixNormal(n,:);
+        respMatrixNormal(n,:);
+        trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
+    end    
+elseif learningMode == 2
+    %Train the network to populate the correlation matrix
+    stimMatrixNormal(1,:);
+    respMatrixNormal(1,:);
+    trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(1,:))* respMatrixNormal(1,:))
+    trainedNetwork1 = trainedNetwork'
+        
+    %train the rest
+    for n=2:stimVecSize
+        n
+        stimVec(n,:)
+        stimMatrixNormal(n,:)
+        temp = 1/5 * (stimMatrixNormal(n,:) *trainedNetwork)
+        %temp = 1/5*(ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
+        difference = sigmoidNorm(respVec(n,:)) - temp
+        trainedNetwork = trainedNetwork + difference
+    end
 end
+
+%disp = [5 4 3 2 1]*trainedNetwork;
+
+%disp
