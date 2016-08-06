@@ -23,6 +23,9 @@ end
 trainedNetwork = zeros(stimVecSize(2), respVecSize(2));
 
 if learningMode == 1
+    
+    c = stimVecSize(2)
+    
     %Train the network
     for n=1:stimVecSize
         stimMatrixNormal(n,:);
@@ -30,13 +33,33 @@ if learningMode == 1
         trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
     end    
 elseif learningMode == 2
+    
+    c = stimVecSize(2)
+    
+    %Train the network to populate the correlation matrix
+%     stimMatrixNormal(1,:);
+%     respMatrixNormal(1,:);
+%     trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(1,:))* respMatrixNormal(1,:))
+%     trainedNetwork1 = trainedNetwork'
+        
+    %train the rest
     for n=1:stimVecSize
+        n
+        stimVec(n,:)
+        respVec(n,:)
         stimMatrixNormal(n,:)
         respMatrixNormal(n,:)
-        temp = 1/5 * stimMatrixNormal(n,:)*Y
+        
+        %Rprime = (1/c)SX
+        RPrime = (stimMatrixNormal(n,:) * trainedNetwork)/5
         %temp = 1/5*(ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
-        difference = sigmoidNorm(respVec(n,:)) - temp;
-        trainedNetwork = trainedNetwork + difference;
+        
+        %RDif = R - Rprime
+        RDiff = dot(respMatrixNormal(n,:), RPrime)
+        
+        % X += ctranspose(S)*RDiff
+        trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* RDiff)
+        trainedNetwork1 = trainedNetwork'
     end
 end
 
