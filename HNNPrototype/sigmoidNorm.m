@@ -21,7 +21,7 @@ function [normStimVec] = sigmoidNorm(stimulus)
     %stimNorm = 1 / (expected range of values)
     %stimNorm = 1 / 5;
     
-    %%Preallocat the vector
+    %%Preallocate the vector
     normStimVec = zeros(1,stimVecSize);
     
     %Use Euler's formula to convert the angles into complex form
