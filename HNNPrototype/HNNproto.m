@@ -1,6 +1,9 @@
-function trainedNetwork = HNNproto(stimVec, respVec, learningMode, iterations)
-%learningMode 1: Original
-%learningMode 2 : Improved
+function trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs)
+%learningMode
+%1 == Original learning no Hermetian
+%2 == Improved learning no Hermetian
+%3 == Original learning Hermetian
+%4 == Improved learning Hermetian
 
 stimVecSize = size(stimVec);
 respVecSize = size(respVec);
@@ -20,23 +23,18 @@ for n=1:respVecSize(1)
 end
     
 trainedNetwork = zeros( stimVecSize(2), respVecSize(2));
-      
-for m=1:iterations      
-    %learningMode
-    %1 == Original learning no Hermetian
-    %2 == Improved learning no Hermetian
-    %3 == Original learning Hermetian
-    %4 == Improved learning Hermetian
-        
-    %learningMode 1; Original learning no Hermetian
-    if learningMode == 1  
-          
+              
+%learningMode 1; Original learning no Hermetian
+if learningMode == 1  
+    for m=1:epochs      
         %Train the network
         for n=1:stimVecSize
             trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
-        end   
-    %learningMode 2; improved learning no Hermetian
-    elseif learningMode == 2
+        end
+    end
+%learningMode 2; improved learning no Hermetian
+elseif learningMode == 2
+    for m=1:epochs 
         n = 1;
 
         if m == 1
@@ -48,16 +46,18 @@ for m=1:iterations
         while n <= stimVecSize            
             %Compute the normalization co-efficient
             c = sum(abs(stimMatrixNormal(n,:)));
-            
+
             RPrime = (1/c)*(stimMatrixNormal(n,:) * trainedNetwork);
 
             RDiff = respMatrixNormal(n,:) - RPrime;            
 
             trainedNetwork = trainedNetwork + ((ctranspose(stimMatrixNormal(n,:))*RDiff));
             n = n + 1; 
-        end    
-    %learningMode 3; Original learning Hermetian
-    elseif learningMode == 3
+        end
+    end
+%learningMode 3; Original learning Hermetian
+elseif learningMode == 3
+    for m=1:epochs 
         n = 1;
 
         if m == 1
@@ -72,16 +72,18 @@ for m=1:iterations
 
             %Create Hermetian for higher order statistics
             H = (1/c)*ctranspose(stimMatrixNormal(n,:))*stimMatrixNormal(n,:);
-            
+
             RPrime = H * trainedNetwork;
 
             trainedNetwork = trainedNetwork + ((ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:)) - RPrime);
             n = n + 1; 
         end
-    %learningMode 4; Improved learning Hermetian
-    elseif learningMode == 4
+    end
+%learningMode 4; Improved learning Hermetian
+elseif learningMode == 4
+    for m=1:epochs 
         n = 1;
-        
+
         if m == 1
             trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(1,:))* respMatrixNormal(1,:));
             n = 2;
@@ -94,12 +96,11 @@ for m=1:iterations
 
             %Create Hermetian for higher order statistics
             H = (1/c)*ctranspose(stimMatrixNormal(n,:))*stimMatrixNormal(n,:);
-            
+
             RPrime = H * trainedNetwork;
 
             trainedNetwork = trainedNetwork + ((ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:)) - RPrime);
             n = n + 1; 
-        end        
-        
+        end
     end
 end

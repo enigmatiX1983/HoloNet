@@ -1,9 +1,5 @@
 %sigmoidNorm.m - Sigmoid Normalization
 function [normStimVec] = sigmoidNorm(stimulus)
-
-    %stdDev = std(255);
-    %stimMean = mean();
-    
     %Get the size of the stimulus vector
     temp = size(stimulus);
     stimVecSize = temp(2);
@@ -11,15 +7,13 @@ function [normStimVec] = sigmoidNorm(stimulus)
     %Create an empty array for the theta values
     nValues = zeros(1, stimVecSize); 
     
+    %Calculate size of the vector
+    c = size(stimulus, 2);
+    
     for n = 1:stimVecSize
-            nValues(n) = ((360/5)*stimulus(n))*(pi/180);
+            nValues(n) = ((360/c)*stimulus(n))*(pi/180);
             %nValues(n) = ( 2 * pi ) / ( 1 + exp( -( stimulus(n) - stimMean )));
     end
-
-    %Normalize the nValues so that they fall within the unit circle
-    %tempSum = sum(stimulus);
-    %stimNorm = 1 / (expected range of values)
-    %stimNorm = 1 / 5;
     
     %%Preallocate the vector
     normStimVec = zeros(1,stimVecSize);
@@ -29,4 +23,3 @@ function [normStimVec] = sigmoidNorm(stimulus)
         %normStimVec(n) = stimNorm * stimulus(n) * ( cos(nValues(n)) + 1i * sin(nValues(n)) );
         normStimVec(n) = ( cos(nValues(n)) + 1i * sin(nValues(n)) );
     end 
-    %normStimVecr
