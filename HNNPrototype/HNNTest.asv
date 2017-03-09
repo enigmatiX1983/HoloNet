@@ -6,8 +6,20 @@ function [output] = HNNTest( stimFile, respFile, learningMode, epochs )
 
     %stimVec = importdata('testdata/stimuluslist.dat');
     %respVec = importdata('testdata/responselist.dat');
-
-    stimVecSize = size(stimVec);
-    respVecSize = size(respVec);
     
-    X = HNNprofo(stimVec, respVec, 
+    output = HNNproto(stimVec, respVec, learningMode, epochs);
+    
+    tmpDifferenceVec = zeros(size(respVec));
+    
+    stimVecSize = size(stimVec, 2);
+    
+    %Temporary c value
+    c = stimVecSize;
+    
+    %Generate actual results to compare to
+    for n=1:stimVecSize
+        tmpDifferenceVec(n) = ((1/stimVecSize)*sigmoidNorm(stimVec(n,:))*output) - sigmoidNorm(respVec(n));
+        euclideanDistance = 
+    end
+    
+    fprintf('Training results: %d distance!', 
