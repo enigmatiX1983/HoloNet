@@ -1,5 +1,5 @@
 %%Example: 
-function [output] = HNNTest( stimFile, respFile, learningMode, epochs )
+function [trainedNetwork] = HNNTest( stimFile, respFile, learningMode, epochs )
 
     stimVec = importdata(stimFile);
     respVec = importdata(respFile);
@@ -7,7 +7,7 @@ function [output] = HNNTest( stimFile, respFile, learningMode, epochs )
     %stimVec = importdata('testdata/stimuluslist.dat');
     %respVec = importdata('testdata/responselist.dat');
     
-    output = HNNproto(stimVec, respVec, learningMode, epochs);
+    trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs);
     
     tmpDifferenceVec = zeros(size(respVec));
     
@@ -18,7 +18,9 @@ function [output] = HNNTest( stimFile, respFile, learningMode, epochs )
     
     %Generate actual results to compare to
     for n=1:stimVecCount
-        tmpDifferenceVec(n) = ((1/c)*sigmoidNorm(stimVec(n,:))*output) - sigmoidNorm(respVec(n));
+        tmpDifferenceVec(n) = ((1/c)*sigmoidNorm(stimVec(n,:))*trainedNetwork) - sigmoidNorm(respVec(n));
     end
+    
+    plotNeurons(trainedNetwork);
     
     tmpDifferenceVec
