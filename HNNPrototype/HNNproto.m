@@ -1,9 +1,13 @@
-function trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs)
+function trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs, symmetryFunc)
 %learningMode
 %1 == Original learning no Hermetian
 %2 == Improved learning no Hermetian
 %3 == Original learning Hermetian
 %4 == Improved learning Hermetian
+
+%symmetryFunc
+%1 == sigmoidNorm
+%2 == transferFunc
 
 stimVecSize = size(stimVec);
 respVecSize = size(respVec);
@@ -14,12 +18,20 @@ respMatrixNormal = zeros(respVecSize(1), respVecSize(2));
 
 %%Process the stimulus vector
 for n=1:stimVecSize(1)
-    stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
+    if symmetryFunc == 1
+        stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
+    elseif symmetryFunc == 2
+        stimMatrixNormal(n,:) = transferFnNorm(stimVec(n,:));
+    end
 end
 
 %%Process the response vector
 for n=1:respVecSize(1)
-    respMatrixNormal(n,:) =  sigmoidNorm(respVec(n,:));
+    if symmetryFunc == 1
+        respMatrixNormal(n,:) =  sigmoidNorm(respVec(n,:));
+    elseif symmetryFunc == 2
+        respMatrixNormal(n,:) =  transferFnNorm(respVec(n,:));
+    end
 end
     
 trainedNetwork = zeros( stimVecSize(2), respVecSize(2));
