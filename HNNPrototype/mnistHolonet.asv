@@ -1,0 +1,7 @@
+function [ output_args ] = mnistHolonet( input_args )
+%MNISTHOLONET Summary of this function goes here
+%   Detailed explanation goes here
+    mnistImages = loadMNISTImages('training_images\train-images.idx3-ubyte');
+    mnistLables = loadMNISTLabels('training_labels\train-labels.idx1-ubyte');
+end
+
