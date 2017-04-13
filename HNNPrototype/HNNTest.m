@@ -17,8 +17,9 @@ function [trainedNetwork] = HNNTest( stimFile, respFile, learningMode, epochs, s
     c = size(stimVec, 2);
     
     %Generate actual results to compare to
+    idealResponseVec = sigmoidNorm(respVec')';
     for n=1:stimVecCount
-        tmpDifferenceVec(n) = ((1/c)*sigmoidNorm(stimVec(n,:))*trainedNetwork) - sigmoidNorm(respVec(n));
+        tmpDifferenceVec(n) = ((1/c)*sigmoidNorm(stimVec(n,:))*trainedNetwork) - idealResponseVec(n);
     end
      
     plotNeurons(trainedNetwork);

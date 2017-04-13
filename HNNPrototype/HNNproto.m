@@ -1,4 +1,4 @@
-function trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs, symmetryFunc)
+function trainedNetwork = HNNproto(stimVec, respVec, learningMode, symmetryFunc, oneToOneStimProc, epochs )
 %learningMode
 %1 == Original learning no Hermetian
 %2 == Improved learning no Hermetian
@@ -11,111 +11,50 @@ function trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs, symme
 
 stimVecSize = size(stimVec);
 respVecSize = size(respVec);
-reportNumber = 100;
 
-%%Preallocate the matrix array for the Stimulus Vector
-%Preallocate two dimensional (one dimension x time) (sound)
-if numel(stimVecSize) == 2
-    stimMatrixNormal = zeros(stimVecSize(1), stimVecSize(2));
-%Preallocate three dimensional (two dimension x time) (black and white vision)
-elseif numel(stimVecSize) == 3
-    stimMatrixNormal = zeros(stimVecSize(1), stimVecSize(2), stimVecSize(3));
-end
-
-%%Preallocate the matrix array for the Response Vector
-%Preallocate two dimensional (one dimension x time) (sound)
-if numel(respVecSize) == 2
-    respMatrixNormal = zeros(respVecSize(1), respVecSize(2));
-%Preallocate three dimensional (two dimension x time) (black and white vision)
-elseif numel(respVecSize) == 3
-    respMatrixNormal = zeros(respVecSize(1), respVecSize(2), respVecSize(3));
-end
+%%Preallocate the matrix array
+stimMatrixNormal = zeros(stimVecSize(1), stimVecSize(2));
+respMatrixNormal = zeros(respVecSize(1), respVecSize(2));
 
 %%Process the stimulus vector
-%Two dimensional case
-if numel(stimVecSize) == 2
-    for n=1:respVecSize(1)
-        if symmetryFunc == 1
-            stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
-        elseif symmetryFunc == 2
-            stimMatrixNormal(n,:) = transferFnNorm(stimVec(n,:));
-        end
-        
-        if mod(n, reportNumber) == 0
-            fprintf('Processing stimulus element %i\n', n);
-        end
+for n=1:stimVecSize(1)
+    if strcmp('sigmoid', symmetryFunc)
+        stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
+    elseif strcmp('improvedTransfer', symmetryFunc)
+        stimMatrixNormal(n,:) = transferFnNorm(stimVec(n,:), oneToOneStimProc);
     end
-%Three dimensional case
-elseif numel(stimVecSize) == 3
-    for n=1:stimVecSize(3)
-        if symmetryFunc == 1
-            stimMatrixNormal(:,:,n) =  sigmoidNorm(stimVec(:,:,n));
-        elseif symmetryFunc == 2
-            stimMatrixNormal(:,:,n) = transferFnNorm(stimVec(:,:,n), 1);
-        end
-
-        if mod(n, reportNumber) == 0
-            fprintf('Processing stimulus element %i\n', n);
-        end
+    
+    if mod(n, 10) == 0
+        fprintf('Processing stimulus element %i\n', n);
     end
 end
 
 %%Process the response vector
-%Two dimensional case
-if numel(respVecSize) == 2
-    for n=1:respVecSize(1)
-        if symmetryFunc == 1
-            respMatrixNormal(n,:) =  sigmoidNorm(respVec(n,:));
-        elseif symmetryFunc == 2
-            respMatrixNormal(n,:) =  transferFnNorm(respVec(n,:), 1);
-        end
-        
-        if mod(n, reportNumber) == 0
-            fprintf('Processing response element %i\n', n);
-        end
-    end
-%Three dimensional case
-elseif numel(respVecSize) == 3
-    for n=1:respVecSize(3)
-        if symmetryFunc == 1
-            respMatrixNormal(:,:,n) =  sigmoidNorm(respVec(:,:,n));
-        elseif symmetryFunc == 2
-            respMatrixNormal(:,:,n) =  transferFnNorm(respVec(:,:,n), 1);
-        end
-
-        if mod(n, reportNumber) == 0
-            fprintf('Processing response element %i\n', n);
-        end
+for n=1:respVecSize(2)
+    %here we 
+    if strcmp('sigmoid', symmetryFunc)
+        respMatrixNormal(n) =  sigmoidNorm(respVec(:,n)')';
+    elseif strcmp('improvedTransfer', symmetryFunc)
+        %respMatrixNormal(n) =  transferFnNorm(respVec, oneToOneStimProc);
+        respMatrixNormal = transferFnNorm(respVec', oneToOneStimProc)';
     end
 end
- 
-if numel(stimVecSize) == 2
-    trainedNetwork = zeros( stimVecSize(2), respVecSize(2));
-elseif numel(stimVecSize) == 3
-    trainedNetwork = zeros (stimVecSize(1), stimVecSize(2), respVecSize(2));
-end
-
-%temp 
-respMatrixNormal = respMatrixNormal';
+    
+trainedNetwork = zeros( stimVecSize(2), respVecSize(2));
               
 %learningMode 1; Original learning no Hermetian
-if learningMode == 1  
+if strcmp('original', learningMode)  
     for m=1:epochs
-        if numel(stimVecSize) == 2
-            %Train the network
-            for n=1:stimVecSize
-                trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
-            end
-        elseif numel(stimVecSize) == 3
-            %Train the network
-            for n=1:stimVecSize
-                trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(:,:,n))* respMatrixNormal(n,:));
-            end
+        fprintf('Original learning algorithm with no Hermetian, epoch %i\n', m);
+        %Train the network
+        for n=1:stimVecSize
+            trainedNetwork = trainedNetwork + (ctranspose(stimMatrixNormal(n,:))* respMatrixNormal(n,:));
         end
     end
 %learningMode 2; improved learning no Hermetian
-elseif learningMode == 2
+elseif strcmp('improved', learningMode) 
     for m=1:epochs 
+        fprintf('Improved learning algorithm with no Hermetian, epoch %i\n', m);
         n = 1;
 
         if m == 1
@@ -137,8 +76,9 @@ elseif learningMode == 2
         end
     end
 %learningMode 3; Original learning Hermetian
-elseif learningMode == 3
+elseif strcmp('originalWithHermetian', learningMode) 
     for m=1:epochs 
+        fprintf('Original learning algorithm with Hermetian, epoch %i\n', m);
         n = 1;
 
         if m == 1
@@ -161,8 +101,9 @@ elseif learningMode == 3
         end
     end
 %learningMode 4; Improved learning Hermetian
-elseif learningMode == 4
+elseif strcmp('improvedWithHermetian', learningMode) 
     for m=1:epochs 
+        fprintf('Improved learning algorithm with Hermetian, epoch %i\n', m);
         n = 1;
 
         if m == 1
