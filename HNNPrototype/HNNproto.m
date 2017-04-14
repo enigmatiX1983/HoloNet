@@ -31,13 +31,7 @@ end
 
 %%Process the response vector
 for n=1:respVecSize(2)
-    %here we 
-    if strcmp('sigmoid', symmetryFunc)
-        respMatrixNormal(n) =  sigmoidNorm(respVec(:,n)')';
-    elseif strcmp('improvedTransfer', symmetryFunc)
-        %respMatrixNormal(n) =  transferFnNorm(respVec, oneToOneStimProc);
-        respMatrixNormal = transferFnNorm(respVec', oneToOneStimProc)';
-    end
+    respMatrixNormal = processResponses(respVec(:,n)')';
 end
     
 trainedNetwork = zeros( stimVecSize(2), respVecSize(2));

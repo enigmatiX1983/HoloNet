@@ -7,7 +7,7 @@ function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
         [f, x] = ecdf(noisyStimulus);
         mapObj = containers.Map(x, (f*2*pi));
     elseif oneToOne == 0   
-        [f, x] = ecdf(reshapedStimulus);
+        [f, x] = ecdf(stimulus);
         mapObj = containers.Map(x, (f*2*pi));
     end
     

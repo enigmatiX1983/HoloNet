@@ -1,5 +1,5 @@
 %%Example: 
-function [trainedNetwork] = HNNTest( stimFile, respFile, learningMode, epochs, symmetryFunc )
+function [trainedNetwork] = HNNTest( stimFile, respFile, learningMode, symmetryFunc, oneToOneStimProc, epochs )
 
     stimVec = importdata(stimFile);
     respVec = importdata(respFile);
@@ -7,7 +7,7 @@ function [trainedNetwork] = HNNTest( stimFile, respFile, learningMode, epochs, s
     %stimVec = importdata('testdata/stimuluslist.dat');
     %respVec = importdata('testdata/responselist.dat');
     
-    trainedNetwork = HNNproto(stimVec, respVec, learningMode, epochs, symmetryFunc);
+    trainedNetwork = HNNproto(stimVec, respVec, learningMode, symmetryFunc, oneToOneStimProc, epochs );
     
     tmpDifferenceVec = zeros(size(respVec));
     
