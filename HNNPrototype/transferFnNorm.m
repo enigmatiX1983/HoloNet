@@ -5,7 +5,8 @@ function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
     if oneToOne == 1
         noisyStimulus = stimulus + (rand(size(stimulus))/ 100);
         [f, x] = ecdf(noisyStimulus);
-        mapObj = containers.Map(x, (f*2*pi));
+        %mapObj = containers.Map(x, (f*(1.97*pi))+0.047);
+        mapObj = containers.Map(x, (f*(2*pi)));
     elseif oneToOne == 0   
         [f, x] = ecdf(stimulus);
         mapObj = containers.Map(x, (f*2*pi));
@@ -23,5 +24,6 @@ function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
         end
         %Use Euler's formula to convert the angles into complex form
         transformedStimVec(i) = ( cos(tempVec(i)) + 1i * sin(tempVec(i)));
+   
     end
 end

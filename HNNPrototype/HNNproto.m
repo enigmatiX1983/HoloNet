@@ -18,13 +18,13 @@ respMatrixNormal = zeros(respVecSize(1), respVecSize(2));
 
 %%Process the stimulus vector
 for n=1:stimVecSize(1)
-    %if strcmp('sigmoid', symmetryFunc)
-    %    stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
-    %elseif strcmp('improvedTransfer', symmetryFunc)
-    %    stimMatrixNormal(n,:) = transferFnNorm(stimVec(n,:), oneToOneStimProc);
-    %end
+    if strcmp('sigmoid', symmetryFunc)
+        stimMatrixNormal(n,:) =  sigmoidNorm(stimVec(n,:));
+    elseif strcmp('improvedTransfer', symmetryFunc)
+        stimMatrixNormal(n,:) = transferFnNorm(stimVec(n,:), oneToOneStimProc);
+    end
     
-    stimMatrixNormal(n,:) = processStimuli(stimVec(n,:));
+    %stimMatrixNormal(n,:) = processStimuli(stimVec(n,:));
     
     if mod(n, 10) == 0
         fprintf('Processing stimulus element %i\n', n);
