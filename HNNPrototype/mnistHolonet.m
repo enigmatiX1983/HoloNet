@@ -9,7 +9,6 @@ function [ ] = mnistHolonet( learningMode, symmetryFunc, oneToOneStimProc, numIm
     mnistTrainingLables = reshape(mnistTrainingLablesT(1,:), [2000 1]);
     mnistTestImages = loadMNISTImages('test_images\t10k-images.idx3-ubyte');
     mnistTestLables = loadMNISTLabels('test_labels\t10k-labels.idx1-ubyte');
-    y
     %Multiply by 255 to un-normalize (RGB)
     stimVec = mnistTrainingImages(:,1:numImagesToTrain)'; %%255;
     %stimVec = mnistTrainingImages(:,500:(499+numImagesToTrain))'; %%255;
@@ -74,4 +73,3 @@ function [ ] = mnistHolonet( learningMode, symmetryFunc, oneToOneStimProc, numIm
 
     
 end
-
