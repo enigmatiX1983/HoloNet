@@ -1,6 +1,4 @@
 function [ processedRespVec ] = processResponses( respVec )
-%PROCESSRESPONSES Summary of this function goes here
-%   Detailed explanation goes here
     uniqueValues = unique(respVec);
     
     %Get the size of the unique values

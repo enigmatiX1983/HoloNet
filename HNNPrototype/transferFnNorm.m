@@ -1,7 +1,14 @@
+%%Function provides a better way of transforming input vectors than
+%%sigmoidNorm (which uses a normal distribution).  Better where inputs do
+%%not follow a normal distribution.
 function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
 %UNTITLED Returns normalized values
-%   Detailed explanation goes here
+    
     rng(1034);
+    
+    %%Here, for the holographic neural network, if oneToOne is selected, we
+    %%add noise so that we do not have too many zero values (will all be
+    %%mapped to the same complex value
     if oneToOne == 1
         noisyStimulus = stimulus + (rand(size(stimulus))/ 100);
         [f, x] = ecdf(noisyStimulus);

@@ -9,12 +9,12 @@ function [normStimVec] = sigmoidNormTest(stimulus)
     stimVecSize = temp(2);
        
     %Create an empty array for the theta values
-    stimMean = mean(stimulus)
-    stimStdDev = std(stimulus)
+    stimMean = mean(stimulus);
+    stimStdDev = std(stimulus);
     nValues = zeros(1, stimVecSize); 
     
     for n = 1:stimVecSize
-            test = exp( -( stimulus(n) - stimMean ))
+            test = exp( -( stimulus(n) - stimMean ));
             %nValues(n) = ((360/stimVecSize)*stimulus(n))*(pi/180);
             nValues(n) = ( 2 * pi ) / ( 1 + exp( -( (stimulus(n) - stimMean)/stimStdDev )));
     end

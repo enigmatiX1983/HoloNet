@@ -1,4 +1,7 @@
-%sigmoidNorm.m - Sigmoid Normalization
+%%sigmoidNorm.m - Sigmoid Normalization
+%%This function takes a set of stimuli, and evenly distributes them around
+%%the cicular complex domain using a sigmoid function.  Works very well for
+%%input that follows a normal distribution
 function [normStimVec] = sigmoidNorm(stimulus)
     %Get the size of the stimulus vector
     temp = size(stimulus);

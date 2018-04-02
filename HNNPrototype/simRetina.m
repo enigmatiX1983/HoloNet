@@ -1,9 +1,7 @@
+%Usage: [processedImage] = simRetina(imread('misc_images/lena512color.tiff'));
+%Usage: [processedImage] = simRetina(imread('misc_images/lena512.bmp'));
 function [ processedImageColorUint ] = simRetina( imageUint )
-%Convert to floating point single
-    %yCbCrImg = rgb2ycbcr(image);
-    
-% Summary of this function goes here
-%   Detailed explanation goes here
+
     onCenterCellMask = [ -1 -1 -1; 
                          -1  8 -1; 
                          -1 -1 -1 ];
@@ -21,6 +19,7 @@ function [ processedImageColorUint ] = simRetina( imageUint )
     else
         image = single(imageUint);
     end
+    
     processedImageOn = ones(imgSize(1), imgSize(2))*255;
     processedImageOff = ones(imgSize(1), imgSize(2))*255;
         
