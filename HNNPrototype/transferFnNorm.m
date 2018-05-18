@@ -1,7 +1,7 @@
 %%Function provides a better way of transforming input vectors than
 %%sigmoidNorm (which uses a normal distribution).  Better where inputs do
 %%not follow a normal distribution.
-function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
+function [ transformedStimVec, stimMapObj, mapObj ] = transferFnNorm( stimulus, oneToOne )
 %UNTITLED Returns normalized values
     
     rng(1034);
@@ -19,6 +19,9 @@ function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
         mapObj = containers.Map(x, (f*2*pi));
     end
     
+    noisyStim = x';
+    stimMapObj = containers.Map(stimulus, noisyStim(2:end));
+    
     %Transform the stimulus
     sizeStim = size(stimulus);
     tempVec = zeros(sizeStim);
@@ -31,6 +34,5 @@ function [ transformedStimVec ] = transferFnNorm( stimulus, oneToOne )
         end
         %Use Euler's formula to convert the angles into complex form
         transformedStimVec(i) = ( cos(tempVec(i)) + 1i * sin(tempVec(i)));
-   
     end
 end

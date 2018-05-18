@@ -15,7 +15,7 @@ respVecSize = size(respVec);
 %%Preallocate the matrix array
 stimMatrixNormal = zeros(stimVecSize(1), stimVecSize(2));
 respMatrixNormal = zeros(respVecSize(1), respVecSize(2));
-vecMap = zeros(stimVecSize(1), stimVecSize(2));
+vecMap = 
 
 %%Process the stimulus vector
 for n=1:stimVecSize(1)
@@ -26,6 +26,7 @@ for n=1:stimVecSize(1)
     end
     
     %stimMatrixNormal(n,:) = processStimuli(stimVec(n,:));
+    
     if mod(n, 10) == 0
         fprintf('Processing stimulus element %i\n', n);
     end

@@ -2,7 +2,7 @@
 %%This function takes a set of stimuli, and evenly distributes them around
 %%the cicular complex domain using a sigmoid function.  Works very well for
 %%input that follows a normal distribution
-function [normStimVec] = sigmoidNorm(stimulus)
+function [normStimVec, vecMap] = sigmoidNorm(stimulus)
     %Get the size of the stimulus vector
     temp = size(stimulus);
     stimVecSize = temp(2);
@@ -18,8 +18,10 @@ function [normStimVec] = sigmoidNorm(stimulus)
             %nValues(n) = ( 2 * pi ) / ( 1 + exp( -( stimulus(n) - stimMean )));
     end
     
-    %%Preallocate the vector
+    %%Preallocate the vectorv
     normStimVec = zeros(1,stimVecSize);
+    
+    vecMap = containers.Map(stimulus, nValues)
     
     %Use Euler's formula to convert the angles into complex form
     for n = 1:stimVecSize
