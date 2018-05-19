@@ -1,31 +1,13 @@
-function [ processedRespVec ] = processResponses( respVec, vecMap )
-    %uniqueValues = unique(respVec);
-    
-    %Get the size of the unique values
-    %sizeUniqueValues = size(uniqueValues);
-       
-    %Create an empty array for the theta values
-    %nValues = zeros(1,sizeUniqueValues(2)); 
-    
-    %Calculate size of the vector
-    %c = size(nValues, 2);
-    
-    %for n = 1:c
-    %        nValues(n) = ((360/c)*uniqueValues(n))*(pi/180);
-            %nValues(n) = ( 2 * pi ) / ( 1 + exp( -( stimulus(n) - stimMean )));
-    %end
-    
-    %mapObj = containers.Map(uniqueValues, nValues);
-    
-    %%Preallocate the vector
+function [ processedRespVec ] = processResponses( symmetryFunc, respVec, vecMap )  
     respVecSize = size(respVec);
     processedRespVec = zeros(1, respVecSize(2));
+    %%Preallocate the vector
+    if strcmp('sigmoid', symmetryFunc)
+        processedRespVec = ( cos(vecMap(respVec)) + 1i * sin(vecMap(respVec)) );
+    end
     
-    %Use Euler's formula to convert the angles into complex form
-    for n = 1:respVecSize(2)
-        %normStimVec(n) = stimNorm * stimulus(n) * ( cos(nValues(n)) + 1i * sin(nValues(n)) );
-        processedRespVec(n) = ( cos(vecMap(respVec(n))) + 1i * sin(vecMap(respVec(n))) );
-    end 
-
+    if strcmp('sigmoid', symmetryFunc)
+        processedRespVec = ( cos(vecMap(respVec)) + 1i * sin(vecMap(respVec)) );
+    end
 end
 

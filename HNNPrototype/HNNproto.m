@@ -21,8 +21,10 @@ vecMap = zeros(stimVecSize(1), stimVecSize(2));
 for n=1:stimVecSize(1)
     if strcmp('sigmoid', symmetryFunc)
         [stimMatrixNormal(n,:), vecMap] =  sigmoidNorm(stimVec(n,:));
+        respMatrixNormal(n,:) = processResponses('sigmoid', respVec(n,:)', vecMap);
     elseif strcmp('improvedTransfer', symmetryFunc)
         [stimMatrixNormal(n,:), vecMap] = transferFnNorm(stimVec(n,:), oneToOneStimProc);
+        respMatrixNormal(n,:) = processResponses('improvedTransfer', respVec(:,n)', vecMap, mapObj);
     end
     
     %stimMatrixNormal(n,:) = processStimuli(stimVec(n,:));
@@ -31,12 +33,6 @@ for n=1:stimVecSize(1)
     end
 end
 
-for n=1:respVecSize(2)
-    %%FOR LEARNING RESP VALUE NEEDS TO EXIST IN STIM VALUES SO THAT IT CAN
-    %%BE MAPPED, CANT MAKE ASSUMPTIONS ABOUT RANGE
-    respMatrixNormal = processResponses(respVec(:,n)', vecMap);
-end
-    
 trainedNetwork = zeros( stimVecSize(2), respVecSize(2));
               
 %learningMode 1; Original learning no Hermetian
