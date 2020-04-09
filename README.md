@@ -9,6 +9,6 @@ The "Holographic" Matrix is essentially each stimulus/response pair's *amalgamat
 
 Thus, a stimulus size of 20, with a set of 3 orthogonal-response-bits (giving us 2^3 = 8 different responses), gives us a holographic matrix size of (20 * 3) = 60, in the form of a 20x3 matrix of complex valued numbers, with each response returned as a 3-component vector.  The dot product is an Stimulus x Response O(m*n) operation.
 
-Some preprocessing needs to be done, namely taking the stimulus data and making sure that the stimuli are well-distributed around the complex plane, else errors can accrue, and the accuracy can be affected.
+Some preprocessing needs to be done, namely taking the stimulus data and making sure that the stimuli are well-distributed around the complex plane, else errors can accrue, and the accuracy can be affected.  More on its caveats can be found in the relevant literature.
 
 Also included are higher-order functions to achieve stimulus expansion (which allows more simulus/response vectors to be accurately stored), as a Hermetian matrix appended to the stimulus matrix.
