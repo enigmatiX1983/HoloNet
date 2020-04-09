@@ -7,7 +7,7 @@ Holographic Neural Networks (also Holographic Associative Memory) have some inte
 
 The "Holographic" Matrix is essentially each stimulus/response pair's *amalgamated* "interference pattern", in principle similar to the phase difference that's stored on a physical holographic substrate.  In the same way that the original image is retreived from a a physical hologram (light of a specific wavelength is shone on the substrate, revealing the original), a novel stimulus (functioning like a laser of a specific wavelength) is "shone" on the holographic matrix.  The stimulus' conjugate transpose is dot-producted with the Holographic Matrix, and a response close to the trained value is (hopefully) returned.
 
-Thus, a stimulus size of 20, with a set of 3 orthogonal-response-bits, gives us a holographic matrix size of (20 * 3) = 60, in the form of a 20x3 matrix of complex valued numbers, with each response returned as a 3-component vector.
+Thus, a stimulus size of 20, with a set of 3 orthogonal-response-bits (giving us 2^3 = 8 different responses), gives us a holographic matrix size of (20 * 3) = 60, in the form of a 20x3 matrix of complex valued numbers, with each response returned as a 3-component vector.  The dot product is an Stimulus x Response O(m*n) operation.
 
 Some preprocessing needs to be done, namely taking the stimulus data and making sure that the stimuli are well-distributed around the complex plane, else errors can accrue, and the accuracy can be affected.
 
